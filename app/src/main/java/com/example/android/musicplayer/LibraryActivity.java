@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 public class LibraryActivity extends AppCompatActivity {
 
+    public static ArrayList<Song> songs = new ArrayList<Song>();
+
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -45,8 +47,7 @@ public class LibraryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
 
-        //Creates an array list of words
-        ArrayList<Song> songs = new ArrayList<Song>();
+        //Creates an array list of songs
         songs.add(new Song("Paranoid", "Black Sabbath"));
         songs.add(new Song("Duality","Slipknot"));
         songs.add(new Song("Dreamer","Ozzy Osbourne"));
@@ -77,11 +78,19 @@ public class LibraryActivity extends AppCompatActivity {
     }
 
     public void selectItemForNowPlaying(int position) {
-        TextView nowPlayingSongName = findViewById(R.id.now_playing_song_name_text_view);
-        nowPlayingSongName.setText("Song Name");
-        TextView nowPlayingArtistName = findViewById(R.id.now_playing_artist_name_text_view);
-        nowPlayingArtistName.setText("Name of Artist");
+
+        String songName = songs.get(position).getSongName();
+        String artistName = songs.get(position).getArtistName();
+
         Intent goToNowPlaying = new Intent(this, MainActivity.class);
+
+        Bundle extras = new Bundle();
+
+        extras.putString("Song Name", songName);
+        extras.putString("Artist Name", artistName);
+
+        goToNowPlaying.putExtras(extras);
+
         startActivity(goToNowPlaying);
     }
 
